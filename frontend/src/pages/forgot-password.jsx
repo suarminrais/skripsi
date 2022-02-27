@@ -8,35 +8,20 @@ import Input from '@/components/Input'
 import Label from '@/components/Label'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useState } from 'react'
 
-const PasswordReset = () => {
-    const router = useRouter()
-
-    const { resetPassword } = useAuth({ middleware: 'guest' })
+const ForgotPassword = () => {
+    const { forgotPassword } = useAuth({ middleware: 'guest' })
 
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [password_confirmation, setPasswordConfirmation] = useState('')
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
 
     const submitForm = event => {
         event.preventDefault()
 
-        resetPassword({
-            email,
-            password,
-            password_confirmation,
-            setErrors,
-            setStatus,
-        })
+        forgotPassword({ email, setErrors, setStatus })
     }
-
-    useEffect(() => {
-        setEmail(router.query.email || '')
-    }, [router.query.email])
 
     return (
         <GuestLayout>
@@ -48,6 +33,11 @@ const PasswordReset = () => {
                         </a>
                     </Link>
                 }>
+                <div className="mb-4 text-sm text-gray-600">
+                    Forgot your password? No problem. Just let us know your
+                    email address and we will email you a password reset link
+                    that will allow you to choose a new one.
+                </div>
 
                 {/* Session Status */}
                 <AuthSessionStatus className="mb-4" status={status} />
@@ -59,10 +49,10 @@ const PasswordReset = () => {
                     {/* Email Address */}
                     <div>
                         <Label htmlFor="email">Email</Label>
-
                         <Input
                             id="email"
                             type="email"
+                            name="email"
                             value={email}
                             className="block mt-1 w-full"
                             onChange={event => setEmail(event.target.value)}
@@ -71,39 +61,8 @@ const PasswordReset = () => {
                         />
                     </div>
 
-                    {/* Password */}
-                    <div className="mt-4">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            value={password}
-                            className="block mt-1 w-full"
-                            onChange={event => setPassword(event.target.value)}
-                            required
-                        />
-                    </div>
-
-                    {/* Confirm Password */}
-                    <div className="mt-4">
-                        <Label htmlFor="password_confirmation">
-                            Confirm Password
-                        </Label>
-
-                        <Input
-                            id="password_confirmation"
-                            type="password"
-                            value={password_confirmation}
-                            className="block mt-1 w-full"
-                            onChange={event =>
-                                setPasswordConfirmation(event.target.value)
-                            }
-                            required
-                        />
-                    </div>
-
                     <div className="flex items-center justify-end mt-4">
-                        <Button>Reset Password</Button>
+                        <Button>Email Password Reset Link</Button>
                     </div>
                 </form>
             </AuthCard>
@@ -111,4 +70,4 @@ const PasswordReset = () => {
     )
 }
 
-export default PasswordReset
+export default ForgotPassword
