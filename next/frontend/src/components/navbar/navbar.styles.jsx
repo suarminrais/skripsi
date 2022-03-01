@@ -41,6 +41,7 @@ export const Nav = styled.nav`
 `
 export const NavContainer = styled.div`
   display: flex;
+  align-items: center;
 `
 
 export const NavItem = styled.div`
@@ -48,6 +49,15 @@ export const NavItem = styled.div`
   align-items: center;
   padding: 14px 16px;
   font-size: 16px;
+  font-weight: 500;
+  color: #5d5d5d;
+`
+
+export const NavLogo = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  font-size: 22px;
   font-weight: 500;
   color: #5d5d5d;
 `
@@ -79,4 +89,5 @@ export const Button = styled.button`
   }
 
   ${({ mlAuto }) => mlAuto && 'margin-left:1rem;'}
+  ${({ ml }) => ml && 'margin-left:auto;'}
 `
