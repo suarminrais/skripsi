@@ -4,14 +4,17 @@ import Section from "@/components/section/section.components";
 import Head from "next/head";
 import React from "react";
 import ProgramCard from "@/components/program/program.component";
+import { useAuth } from "@/hooks/auth";
 
 const Program = () => {
+  const { user, logout } = useAuth({ middleware: 'guest' });
+
   return (
     <>
       <Head>
         <title>Modal Tani - Program</title>
       </Head>
-      <Navbar />
+      <Navbar user={user} logout={logout} />
       <Section title="Program Modal Tani" subtitle="Bantu Petani, Pilih Program Pertanian. Modali dan Bagi Hasilnya." total="30">
         <ProgramCard
           id={1}

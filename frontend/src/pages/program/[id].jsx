@@ -20,10 +20,12 @@ import { ProgramDetailType } from "@/components/program/program.styles";
 import { ProgramDetailContent } from "@/components/program/program.styles";
 import { ProgramDetailImage } from "@/components/program/program.styles";
 import { ProgramDetailContainer } from "@/components/program/program.styles";
+import { useAuth } from "@/hooks/auth";
 import Head from "next/head";
 import React, { useState } from "react";
 
 const ProgramDetail = () => {
+  const { user, logout } = useAuth({ middleware: 'guest' });
   const [active, setActive] = useState(1);
 
   const checkActive = (id) => (active === id ? true : false);
@@ -33,7 +35,7 @@ const ProgramDetail = () => {
       <Head>
         <title>Modal Tani - Program Detail</title>
       </Head>
-      <Navbar />
+      <Navbar user={user} logout={logout} />
       <ProgramDetailContainer>
         <Container>
           <ProgramDetailImage src="https://bucket.tanifund.com/uploads/projects/58d55ebd-9e45-4882-a85a-2b060209fc4d/280222030745-image.jpg" />

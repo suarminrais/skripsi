@@ -9,16 +9,19 @@ import { BlogDetailContainer } from "@/components/blog/blog.styles";
 import Footer from "@/components/footer/footer.component";
 import Navbar from "@/components/navbar/navbar.component";
 import { Container } from "@/components/navbar/navbar.styles";
+import { useAuth } from "@/hooks/auth";
 import Head from "next/head";
 import React from "react";
 
 const BlogDetail = () => {
+  const { user, logout } = useAuth({ middleware: 'guest' });
+
   return (
     <>
       <Head>
         <title>Modal Tani - Blog Detail</title>
       </Head>
-      <Navbar />
+      <Navbar user={user} logout={logout} />
       <BlogDetailContainer>
         <Container>
           <BlogDetailImage src="https://bucket.tanifund.com/uploads/projects/58d55ebd-9e45-4882-a85a-2b060209fc4d/280222030745-image.jpg" />
