@@ -2,6 +2,7 @@ import Card from "@/components/card/card.component";
 import { Input } from "@/components/card/card.styles";
 import Footer from "@/components/footer/footer.component";
 import { Checkbox } from "@/components/form/form.component";
+import { Loader } from "@/components/loader/loader.styles";
 import Navbar from "@/components/navbar/navbar.component";
 import { Button } from "@/components/navbar/navbar.styles";
 import { useAuth } from "@/hooks/auth";
@@ -13,6 +14,7 @@ const Login = () => {
     middleware: 'guest',
     redirectIfAuthenticated: '/investasi'
   })
+  const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -22,7 +24,8 @@ const Login = () => {
   const [errors, setErrors] = useState([])
 
   const handleClick = () => {
-    register({ name, email, password, password_confirmation, setErrors });
+    setLoading(true)
+    register({ name, email, password, password_confirmation, setLoading, setErrors });
   }
 
   useEffect(() => {
@@ -42,7 +45,7 @@ const Login = () => {
         <Input value={password_confirmation} onChange={e => setPasswordConfirmation(e.target.value)} placeholder="Ulangi Password" type="password" />
         <Checkbox label="Pemodal" value={type} onChecked={() => setType('pemodal')} name="type" />
         <Button full primary onClick={handleClick}>
-          Daftar
+          {loading ? <Loader /> : 'Daftar'}
         </Button>
       </Card>
       <Footer />
