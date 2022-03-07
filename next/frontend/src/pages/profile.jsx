@@ -16,13 +16,21 @@ const Profile = () => {
   const [name, setName] = useState(user.name)
   const [email, setEmail] = useState(user.email)
   const [password, setPassword] = useState()
+  const [image, setImage] = useState()
   const [password_confirmation, setPasswordConfirmation] = useState()
   const [errors, setErrors] = useState([])
 
   const handleClick = async () => {
     const { id } = user;
+    const formData = new FormData();
+    formData.append('name', name)
+    formData.append('email', email)
+    if (password) formData.append('password', password)
+    if (password_confirmation) formData.append('password_confirmation', password_confirmation)
+    formData.append('image', image)
+    formData.append('_method', 'put')
     setLoading(true)
-    await update({ id, name, password_confirmation, email, password, setErrors })
+    await update({ id, formData, setErrors })
     setLoading(false)
   }
 
@@ -38,7 +46,7 @@ const Profile = () => {
       <Navbar user={user} logout={logout} />
       <Card title="Edit Profile">
         <Form>
-          <InputLabel full label="Foto Profile" type="file" accept="image/*" />
+          <InputLabel onChange={e => setImage(e.target.files[0])} full label="Foto Profile" type="file" accept="image/*" />
           <InputLabel value={name} onChange={e => setName(e.target.value)} full label="Nama" type="text" />
           <InputLabel value={email} onChange={e => setEmail(e.target.value)} full label="Email" type="email" />
           <InputLabel value={password} onChange={e => setPassword(e.target.value)} full label="Password" type="password" />

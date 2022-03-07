@@ -61,13 +61,15 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
       })
   }
 
-  const update = async ({ id, setErrors, ...props }) => {
+  const update = async ({ id, setErrors, formData }) => {
     await csrf()
 
     setErrors([])
 
     axios
-      .put(`/api/v1/user/${id}`, props)
+      .post(`/api/v1/user/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
       .then(() => {
         if (mutate) {
           return mutate()
