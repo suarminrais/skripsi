@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { Container, Nav, NavContainer, NavItem, NavLogo, Button } from "./navbar.styles";
 
@@ -6,16 +7,30 @@ const Navbar = ({ user }) => {
     <Nav>
       <Container>
         <NavContainer>
-          <NavLogo>Modal Tani</NavLogo>
-          <NavItem>Program</NavItem>
-          <NavItem>Investasiku</NavItem>
-          <NavItem>Blog</NavItem>
-          <Button ml>Masuk</Button>
-          <Button primary mlAuto>Daftar</Button>
+          <Link href="/">
+            <NavLogo>Modal Tani</NavLogo>
+          </Link>
+          <Link href="/program">
+            <NavItem>Program</NavItem>
+          </Link>
+          <Link href="/investasi">
+            <NavItem>Investasiku</NavItem>
+          </Link>
+          <Link href="/blog">
+            <NavItem>Blog</NavItem>
+          </Link>
+          <Link href="/login">
+            <Button ml>Masuk</Button>
+          </Link>
+          <Link href="/register">
+            <Button primary mlAuto mr>
+              Daftar
+            </Button>
+          </Link>
         </NavContainer>
       </Container>
     </Nav>
   );
-} 
+};
 
 export default Navbar;
