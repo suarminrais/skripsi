@@ -16,6 +16,14 @@ export const FormColumn = styled.div`
   }
 `;
 
+export const FormRow = styled.div`
+  display: flex;
+  gap:16px;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  margin-top: -0.5rem;
+`;
+
 export const FormLabel = styled.label`
   font-weight: 600;
   font-size: 16px;
@@ -40,9 +48,9 @@ export const EditorContainer = styled.div`
 `;
 
 export const FormInput = styled(Input)`
-  width: calc(100% - 35px);
+  ${({ full }) => !full && ` width: calc(100% - 35px);
   @media screen and (max-width: 767px) {
     width: calc(100% - 35px);
-  }
+  }`}
   ${({ hide }) => hide && "display: none;"}
 `;

@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { ProgramDetailDivider } from "../program/program.styles";
-import InvestationCard from "./investation-card.component";
 
 export const InvestationContainer = styled.div`
   margin-top: 64px;

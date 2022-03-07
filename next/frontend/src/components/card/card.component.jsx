@@ -16,10 +16,16 @@ const Card = ({ title, subtitle, to, href, children }) => {
         <CardBody>
           <CardHead>{title}</CardHead>
           <CardRow>
-            <CardSubtile>{subtitle}</CardSubtile>
-            <Link href={href}>
-              <CardLink>{to}</CardLink>
-            </Link>
+            {
+              subtitle && (<CardSubtile>{subtitle}</CardSubtile>)
+            }
+            {
+              href && (
+                <Link href={href}>
+                  <CardLink>{to}</CardLink>
+                </Link>
+              )
+            }
           </CardRow>
           <CardColumn>{children}</CardColumn>
         </CardBody>

@@ -96,3 +96,74 @@ export const Button = styled.button`
   ${({ full }) => full && "width:100%;"}
   ${({ flex }) => flex && "flex:auto;"}
 `;
+
+export const NameContainer = styled.div`
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 19px;
+  font-weight: 600;
+  color: #fff;
+  background: #2f80ed;
+`;
+
+export const AuthContainer = styled.div`
+  display:flex;
+  gap:10px;
+  align-items: center;
+  margin-right: 16px;
+`;
+
+export const AuthName = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  color: #5d5d5d;
+`;
+
+export const SvgWrapper = styled.div`
+  cursor: pointer;
+`;
+
+export const DropdownMenu = styled.div`
+  z-index: 80;
+  display: ${({ show }) => show ? 'block' : 'none'};
+  float: left;
+  min-width: 10rem;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 0.25rem;
+  position: absolute;
+  will-change: transform;
+  top: 0px;
+  transform: translate3d(-31px, 48px, 0px);
+`;
+
+export const DropdownItem = styled.div`
+  display: block;
+  width: 100%;
+  padding: 0.25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  cursor:pointer;
+`;
+
+export const DropdownDivider = styled.div`
+  height: 0;
+  margin: 0.5rem 0;
+  overflow: hidden;
+  border-top: 1px solid #e9ecef;
+`;
