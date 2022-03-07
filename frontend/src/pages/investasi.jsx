@@ -1,7 +1,6 @@
 import CardInvestation from "@/components/card/card-investation.component";
 import Footer from "@/components/footer/footer.component";
 import { InputLabel } from "@/components/form/form.component";
-import { EditorForm } from "@/components/form/form.component";
 import { Form } from "@/components/form/form.component";
 import InvestationCard from "@/components/investation/investation-card.component";
 import { InvestationColumn } from "@/components/investation/investation.styles";
@@ -14,8 +13,11 @@ import { Button } from "@/components/navbar/navbar.styles";
 import { Container } from "@/components/navbar/navbar.styles";
 import { useAuth } from "@/hooks/auth";
 import { useModal } from "@/hooks/modal";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import React, { useState } from "react";
+
+const EditorForm = dynamic(() => import('../components/form/form-editor.component'), { ssr: false });
 
 const Investation = () => {
   const [show, handleClick] = useModal();

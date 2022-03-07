@@ -13,8 +13,8 @@ const Profile = () => {
   const { user, logout, update } = useAuth({ middleware: 'auth' });
 
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState(user.name)
-  const [email, setEmail] = useState(user.email)
+  const [name, setName] = useState()
+  const [email, setEmail] = useState()
   const [password, setPassword] = useState()
   const [image, setImage] = useState()
   const [password_confirmation, setPasswordConfirmation] = useState()
@@ -37,6 +37,11 @@ const Profile = () => {
   useEffect(() => {
     if (errors.length > 0) alert(errors)
   }, [errors]);
+
+  useEffect(() => {
+    setEmail(user?.email);
+    setName(user?.name);
+  }, [user]);
 
   return (
     <>

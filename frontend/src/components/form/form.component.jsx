@@ -25,12 +25,3 @@ export const Checkbox = ({ label, value, ...props }) => {
   );
 }
 
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorContainer } from "./form.styles";
-
-export const EditorForm = ({ state, setState }) => (
-  <EditorContainer>
-    <Editor editorState={state} toolbarClassName="toolbarClassName" wrapperClassName="wrapperClassName" editorClassName="editorClassName" onEditorStateChange={(e) => setState(e)} />
-  </EditorContainer>
-);

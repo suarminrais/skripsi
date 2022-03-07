@@ -23,9 +23,13 @@ const Navbar = ({ user, logout }) => {
           <Link href="/program">
             <NavItem>Program</NavItem>
           </Link>
-          <Link href="/investasi">
-            <NavItem>Investasiku</NavItem>
-          </Link>
+          {
+            user && (
+              <Link href="/investasi">
+                <NavItem>Investasiku</NavItem>
+              </Link>
+            )
+          }
           <Link href="/blog">
             <NavItem>Blog</NavItem>
           </Link>
