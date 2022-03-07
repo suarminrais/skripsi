@@ -108,9 +108,11 @@ export const NameContainer = styled.div`
   font-weight: 600;
   color: #fff;
   background: #2f80ed;
+  text-transform: uppercase;
 `;
 
 export const AuthContainer = styled.div`
+  margin-left:auto;
   display:flex;
   gap:10px;
   align-items: center;

@@ -12,6 +12,7 @@ import Modal from "@/components/modal/modal.component";
 import Navbar from "@/components/navbar/navbar.component";
 import { Button } from "@/components/navbar/navbar.styles";
 import { Container } from "@/components/navbar/navbar.styles";
+import { useAuth } from "@/hooks/auth";
 import { useModal } from "@/hooks/modal";
 import Head from "next/head";
 import React, { useState } from "react";
@@ -19,13 +20,14 @@ import React, { useState } from "react";
 const Investation = () => {
   const [show, handleClick] = useModal();
   const [wysiwyg, setWysiwyg] = useState("");
+  const { user, logout } = useAuth({ middleware: 'auth' });
 
   return (
     <>
       <Head>
         <title>Modal Tani - Investasi</title>
       </Head>
-      <Navbar />
+      <Navbar user={user} logout={logout} />
       <InvestationContainer>
         <Container>
           <InvestationBody>

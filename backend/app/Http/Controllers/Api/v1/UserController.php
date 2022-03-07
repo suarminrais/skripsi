@@ -31,29 +31,9 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'sometimes',
             'password' => 'sometimes|confirmed',
-            'email' => 'sometimes|unique:users',
+            'email' => 'sometimes',
             'image' => 'sometimes|image',
         ]);
-
-        $req = [];
-
-        if ($request->name) {
-            array_push($req, [
-                'name' => $request->name,
-            ]);
-        }
-
-        if ($request->email) {
-            array_push($req, [
-                'email' => $request->email,
-            ]);
-        }
-
-        if ($request->password) {
-            array_push($req, [
-                'password' => Hash::make($request->password),
-            ]);
-        }
 
         if ($request->hasFile('image')) {
             $name = time() . '.jpg';
@@ -63,7 +43,11 @@ class UserController extends Controller
             ]);
         }
 
-        $user->update();
+        if (!empty($request->password)) {
+            $request->merge(['password' => Hash::make($request['password'])]);
+        }
+
+        $user->update($request->only(['password', 'email', 'name']));
 
         return response()->json([
             'message' => "data updated!"

@@ -7,11 +7,11 @@ import { FormContainer } from "./form.styles";
 
 export const Form = ({ onSubmit, children }) => <FormContainer onSubmit={onSubmit}> {children}</FormContainer>;
 
-export const InputLabel = ({ label, type, onChange, hide, full }) => {
+export const InputLabel = ({ label, type, value, onChange, hide, full }) => {
   return (
     <FormColumn>
       <FormLabel htmlFor={label}>{label}</FormLabel>
-      <FormInput full={full} hide={hide} id={label} type={type} onChange={onChange} />
+      <FormInput value={value} full={full} hide={hide} id={label} type={type} onChange={onChange} />
     </FormColumn>
   );
 };
