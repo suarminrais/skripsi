@@ -3,7 +3,7 @@ import axios from '@/lib/axios'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
+export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
   const router = useRouter()
 
   const { data: user, error, mutate } = useSWR('/api/user', () =>
@@ -15,6 +15,30 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
         router.push('/verify-email')
       }),
+  )
+
+  const { data: program, mutate: programMutate } = useSWR('/api/v1/program', () =>
+    axios
+      .get('/api/v1/program')
+      .then(res => res.data)
+  )
+
+  const { data: blog, mutate: blogMutate } = useSWR('/api/v1/blog', () =>
+    axios
+      .get('/api/v1/blog')
+      .then(res => res.data)
+  )
+
+  const { data: programDetail, mutate: programDetailMutate } = useSWR(`/api/v1/program/${id}`, () =>
+    axios
+      .get(`/api/v1/program/${id}`)
+      .then(res => res.data)
+  )
+
+  const { data: blogDetail, mutate: blogDetailMutate } = useSWR(`/api/v1/blog/${id}`, () =>
+    axios
+      .get(`/api/v1/blog/${id}`)
+      .then(res => res.data)
   )
 
   const csrf = () => axios.get('/sanctum/csrf-cookie')
@@ -74,6 +98,46 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         if (mutate) {
           return mutate()
         }
+      })
+      .catch(error => {
+        if (error.response?.status !== 422) throw error
+
+        setErrors(Object.values(error.response?.data.errors).flat())
+      })
+  }
+
+  const createProgram = async ({ setErrors, handleClick, formData }) => {
+    await csrf()
+
+    setErrors([])
+
+    axios
+      .post(`/api/v1/program/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(() => {
+        handleClick()
+        programMutate();
+      })
+      .catch(error => {
+        if (error.response?.status !== 422) throw error
+
+        setErrors(Object.values(error.response?.data.errors).flat())
+      })
+  }
+
+  const createBlog = async ({ setErrors, handleClick, formData }) => {
+    await csrf()
+
+    setErrors([])
+
+    axios
+      .post(`/api/v1/blog/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(() => {
+        handleClick()
+        blogMutate();
       })
       .catch(error => {
         if (error.response?.status !== 422) throw error
@@ -147,5 +211,11 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     resendEmailVerification,
     logout,
     update,
+    program,
+    createProgram,
+    programDetail,
+    blog,
+    createBlog,
+    blogDetail,
   }
 }

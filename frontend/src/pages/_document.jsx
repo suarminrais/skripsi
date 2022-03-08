@@ -16,11 +16,11 @@ class MyDocument extends Document {
           />
         </Head>
         <body style={{
-            fontFamily: 'Nunito',
-            margin: 0,
-            padding:0,
-            boxSizing: 'border-box'
-          }}>
+          fontFamily: 'Nunito',
+          margin: 0,
+          padding: 0,
+          boxSizing: 'border-box'
+        }}>
           <Main />
           <NextScript />
         </body>

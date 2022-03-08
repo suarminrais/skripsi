@@ -1,3 +1,4 @@
+import { removeHtml } from "@/utils/string";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../navbar/navbar.styles";
@@ -13,7 +14,7 @@ const Blog = ({ image, title, body, id }) => {
       <BlogImage src={image} />
       <BlogContent>
         <BlogTitle>{title}</BlogTitle>
-        <BlogText>{body}</BlogText>
+        <BlogText>{removeHtml(body)}</BlogText>
         <Link href={`/blog/${id}`}>
           <Button ml primary>
             Baca

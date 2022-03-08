@@ -36,11 +36,11 @@ const Program = ({ id, image, title, location, periode, interest, funded, fundin
         <ProgramBodyContainer>
           <ProgramBody>
             <ProgramType>Target Dana</ProgramType>
-            <ProgramText>Rp. {funded}</ProgramText>
+            <ProgramText>Rp. {funding}</ProgramText>
           </ProgramBody>
           <ProgramBody>
             <ProgramType>Dana Terkumpul</ProgramType>
-            <ProgramText right>Rp. {funding}</ProgramText>
+            <ProgramText right>Rp. {funded}</ProgramText>
           </ProgramBody>
         </ProgramBodyContainer>
       </ProgramContent>

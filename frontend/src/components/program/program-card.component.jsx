@@ -23,21 +23,21 @@ const ProgramCard = ({ title, location, periode, interest, funded, funding, type
         <ProgramBodyContainer>
           <ProgramBody>
             <ProgramType>Lama Periode</ProgramType>
-            <ProgramText>{periode}</ProgramText>
+            <ProgramText>{periode} Bulan</ProgramText>
           </ProgramBody>
           <ProgramBody>
             <ProgramType>Bunga</ProgramType>
-            <ProgramText right>{interest}</ProgramText>
+            <ProgramText right>{interest}%</ProgramText>
           </ProgramBody>
         </ProgramBodyContainer>
         <ProgramBodyContainer>
           <ProgramBody>
             <ProgramType>Target Dana</ProgramType>
-            <ProgramText>Rp. {funded}</ProgramText>
+            <ProgramText>Rp. {funding}</ProgramText>
           </ProgramBody>
           <ProgramBody>
             <ProgramType>Dana Terkumpul</ProgramType>
-            <ProgramText right>Rp. {funding}</ProgramText>
+            <ProgramText right>Rp. {funded}</ProgramText>
           </ProgramBody>
         </ProgramBodyContainer>
       </ProgramCardContent>

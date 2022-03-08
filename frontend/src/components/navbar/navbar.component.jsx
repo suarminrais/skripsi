@@ -24,7 +24,7 @@ const Navbar = ({ user, logout }) => {
             <NavItem>Program</NavItem>
           </Link>
           {
-            user && (
+            (user && user?.type !== 'admin') && (
               <Link href="/investasi">
                 <NavItem>Investasiku</NavItem>
               </Link>

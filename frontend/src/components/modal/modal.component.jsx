@@ -1,4 +1,5 @@
 import React from "react";
+import { Loader } from "../loader/loader.styles";
 import { Button } from "../navbar/navbar.styles";
 import { ModalHeading } from "./modal.styles";
 import { ModalContent } from "./modal.styles";
@@ -8,7 +9,7 @@ import { ModalHead } from "./modal.styles";
 import { ModalBody } from "./modal.styles";
 import { ModalContainer } from "./modal.styles";
 
-const Modal = ({ title, show, handleClick, children }) => {
+const Modal = ({ title, show, loading, handleClick, children, handleSubmit }) => {
   return (
     <ModalContainer show={show}>
       <ModalBody>
@@ -18,8 +19,8 @@ const Modal = ({ title, show, handleClick, children }) => {
         </ModalHead>
         <ModalContent>{children}</ModalContent>
         <ModalFoot>
-          <Button primary ml>
-            Simpan
+          <Button onClick={handleSubmit} primary ml>
+            {loading ? <Loader /> : 'Simpan'}
           </Button>
         </ModalFoot>
       </ModalBody>

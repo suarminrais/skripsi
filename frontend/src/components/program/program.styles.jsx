@@ -132,6 +132,7 @@ export const ProgramDetailLeft = styled.div`
 
   @media screen and (min-width: 1000px) {
     max-width: 580px;
+    width: 100%;
   }
 `;
 
@@ -193,6 +194,7 @@ export const ProgramDetailNavContentMap = styled.iframe`
   border: 1px solid #dedede;
   box-shadow: 0 20px 10px rgb(87 112 131 / 4%);
   border-radius: 8px;
+  margin-bottom: 1rem;
 `;
 
 export const ProgramDetailDivider = styled(BlogDetailDivider)``;

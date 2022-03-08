@@ -1,3 +1,4 @@
+import { perkembanganStatus } from "@/utils/status";
 import React, { useState } from "react";
 import { Button } from "../navbar/navbar.styles";
 import { ProgramIcon } from "../program/program.styles";
@@ -46,8 +47,8 @@ const InvestationCard = ({ title, image, type, location, periode, interest, fund
           <ProgramText>{interest}</ProgramText>
         </InvestationCardColumn>
         <InvestationCardColumn>
-          <ProgramType>Status Investasi</ProgramType>
-          <ProgramText>{status}</ProgramText>
+          <ProgramType>Status Perkembangan</ProgramType>
+          <ProgramText>{perkembanganStatus(status)}</ProgramText>
         </InvestationCardColumn>
       </InvestationCardRow>
       <InvestationCardRow>

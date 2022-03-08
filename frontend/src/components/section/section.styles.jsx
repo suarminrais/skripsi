@@ -42,6 +42,9 @@ export const SectionTotal = styled.div`
 export const SectionBody = styled.div`
   background: whitesmoke;
   padding: 3rem 0;
+  @media screen and (min-width:1000px) {
+    min-height: calc(100vh - 474px);
+  }
 `;
 
 export const SectionRow = styled.div`

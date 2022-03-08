@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProgramController extends Controller
 {
@@ -70,7 +71,7 @@ class ProgramController extends Controller
 
     public function update(Request $request, Program $program)
     {
-        if ($program->status !== 1) return response()->json([
+        if (Auth::user()->type === 'petani' && $program->status !== 1) return response()->json([
             'message' => 'Opss. data sudah tidak bisa diubah!'
         ]);
 
@@ -84,6 +85,7 @@ class ProgramController extends Controller
             'periode' => 'sometimes',
             'interest' => 'sometimes',
             'funding' => 'sometimes',
+            'status' => 'sometimes',
             'image' => 'sometimes|image'
         ]);
 
@@ -94,6 +96,22 @@ class ProgramController extends Controller
                 'name' => $name
             ]);
         }
+
+        if (Auth::user()->type === 'admin')
+            $program->update(
+                $request->only([
+                    'description',
+                    'name',
+                    'type',
+                    'location',
+                    'latitude',
+                    'longitude',
+                    'periode',
+                    'interest',
+                    'funding',
+                    'status',
+                ])
+            );
 
         $program->update(
             $request->only([
@@ -106,7 +124,6 @@ class ProgramController extends Controller
                 'periode',
                 'interest',
                 'funding',
-                'status',
             ])
         );
 

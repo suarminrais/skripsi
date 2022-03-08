@@ -22,13 +22,22 @@ import { ProgramDetailImage } from "@/components/program/program.styles";
 import { ProgramDetailContainer } from "@/components/program/program.styles";
 import { useAuth } from "@/hooks/auth";
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import _ from 'lodash';
 
 const ProgramDetail = () => {
-  const { user, logout } = useAuth({ middleware: 'guest' });
+  const router = useRouter();
+  const { id } = router.query;
+  const { user, logout, programDetail, program } = useAuth({ middleware: 'guest', id });
   const [active, setActive] = useState(1);
+  const [programs, setPrograms] = useState(1);
 
   const checkActive = (id) => (active === id ? true : false);
+
+  useEffect(() => {
+    setPrograms(_.slice(_.filter(program?.data, (e) => e.id !== id), 0, 3));
+  }, [program])
 
   return (
     <>
@@ -38,14 +47,14 @@ const ProgramDetail = () => {
       <Navbar user={user} logout={logout} />
       <ProgramDetailContainer>
         <Container>
-          <ProgramDetailImage src="https://bucket.tanifund.com/uploads/projects/58d55ebd-9e45-4882-a85a-2b060209fc4d/280222030745-image.jpg" />
+          <ProgramDetailImage src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/images/${programDetail?.image.name}`} />
           <ProgramDetailContent>
             <ProgramDetailLeft>
-              <ProgramDetailType>Asadsa ASdas</ProgramDetailType>
-              <ProgramDetailTitle>Program Budidaya Jagung Moncongloe</ProgramDetailTitle>
+              <ProgramDetailType>{programDetail?.type}</ProgramDetailType>
+              <ProgramDetailTitle>{programDetail?.name}</ProgramDetailTitle>
               <ProgramLocation>
                 <ProgramIcon src="/map.png" />
-                <ProgramType mb>Bulukumba</ProgramType>
+                <ProgramType mb>{programDetail?.location}</ProgramType>
               </ProgramLocation>
               <ProgramDetailNav>
                 <ProgramDetailNavItem active={checkActive(1)} onClick={() => setActive(1)}>
@@ -58,61 +67,43 @@ const ProgramDetail = () => {
               <ProgramDetailNavContent
                 active={checkActive(1)}
                 dangerouslySetInnerHTML={{
-                  __html:
-                    "<p>Selama masa pandemi, perhatian terhadap ketahanan pangan menjadi isu sentral di berbagai belahan dunia. Pertumbuhan sektor pertanian selama pandemi pun tidak bisa dianggap remeh, selalu positif meski sektor lain mengalami kontraksi. Sepanjang 2020 sektor pertanian berhasil tumbuh 2,1 persen, dan tren positif ini berlangsung setidaknya hingga kuartal ke-II 2021 dengan tumbuh 0,38 persen. Dari serapan tenaga kerja, penurunan di sektor manufaktur dan sektor usaha lain sebagian beralih profesi menjadi petani di pedesaan. Serapan tenaga kerja di sektor pertanian justru berhasil terjaga di 29,5 persen per Februari 2021, bahkan meningkat 0,36 persen dari tahun sebelumnya.</p><p>Prospek investasi di sektor pertanian dalam bentuk PMA tercatat US$208 juta di kuartal ke-II 2021, tumbuh 10,6 persen <em>year-on-year</em>. Fenomena resiliensi&nbsp;sektor pertanian dalam menghadapi gempuran badai krisis pandemi juga tercermin dari rally di harga komoditas pertanian global. Sebagai contoh harga kopi di pasar internasional telah naik 53,2 persen sejak awal tahun 2021, disusul oleh komoditas jagung tumbuh 11,5 persen dan teh 8,3 persen. Meskipun beberapa negara tujuan ekspor melakukan pengetatan akibat lonjakan varian Delta Covid-19, ternyata tak menyurutkan permintaan di sektor pertanian. Kenapa? Karena pangan adalah kebutuhan pokok.</p>",
+                  __html: programDetail?.description,
                 }}
               />
-              <ProgramDetailNavContentMap
-                active={checkActive(2)}
-                width="100%"
-                height="500"
-                frameborder="0"
-                scrolling="no"
-                marginheight="0"
-                marginwidth="0"
-                src="https://maps.google.com/maps?q=-5.1585186,119.5362168&amp;hl=en&amp;z=14&amp;output=embed"
-              />
+              {
+                programDetail && <ProgramDetailNavContentMap
+                  active={checkActive(2)}
+                  width="100%"
+                  height="500"
+                  frameborder="0"
+                  scrolling="no"
+                  marginheight="0"
+                  marginwidth="0"
+                  src={`https://maps.google.com/maps?q=${programDetail.latitude},${programDetail.longitude}&hl=en&z=14&output=embed`}
+                />
+              }
             </ProgramDetailLeft>
             <ProgramDetailRight>
-              <ProgramCard title="Budidaya" periode="4 Bulan" interest="5%" funded="Rp 34 juta" funding="Rp 1 juta" type="Budidaya" location="Bulukumba" />
+              <ProgramCard title={programDetail?.name} periode={programDetail?.periode} interest={programDetail?.interest} funded={programDetail?.funded?.toLocaleString("id-ID")} funding={programDetail?.funding?.toLocaleString("id-ID")} type={programDetail?.type} location={programDetail?.location} />
             </ProgramDetailRight>
           </ProgramDetailContent>
           <ProgramDetailDivider />
           <ProgramDetailHeading>Program Terkait</ProgramDetailHeading>
           <ProgramDetailFooter>
-            <Program
-              id={1}
-              image="https://bucket.tanifund.com/uploads/projects/58d55ebd-9e45-4882-a85a-2b060209fc4d/280222030745-image.jpg"
-              title="Budidaya"
-              periode="4 Bulan"
-              interest="5%"
-              funded="34 juta"
-              funding="1 juta"
-              type="Budidaya"
-              location="Bulukumba"
-            />
-            <Program
-              id={2}
-              image="https://bucket.tanifund.com/uploads/projects/58d55ebd-9e45-4882-a85a-2b060209fc4d/280222030745-image.jpg"
-              title="Budidaya"
-              periode="4 Bulan"
-              interest="5%"
-              funded="34 juta"
-              funding="1 juta"
-              type="Budidaya"
-              location="Bulukumba"
-            />
-            <Program
-              id={3}
-              image="https://bucket.tanifund.com/uploads/projects/58d55ebd-9e45-4882-a85a-2b060209fc4d/280222030745-image.jpg"
-              title="Budidaya"
-              periode="4 Bulan"
-              interest="5%"
-              funded="34 juta"
-              funding="1 juta"
-              type="Budidaya"
-              location="Bulukumba"
-            />
+            {
+              programs?.length > 0 && programs.map(data => <Program
+                key={data.id}
+                id={data.id}
+                image={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/images/${data.image.name}`}
+                title={data.name}
+                periode={`${data.periode} Bulan`}
+                interest={`${data.interest}%`}
+                funded={data.funded?.toLocaleString("id-ID")}
+                funding={data.funding?.toLocaleString("id-ID")}
+                type={data.type}
+                location={data.location}
+              />)
+            }
           </ProgramDetailFooter>
         </Container>
       </ProgramDetailContainer>

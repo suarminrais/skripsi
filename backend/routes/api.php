@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\v1\BlogController;
 use App\Http\Controllers\Api\v1\ProgramController;
 use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Http\Request;
@@ -32,5 +33,13 @@ Route::prefix('v1')->group(function () {
         Route::middleware('auth:sanctum')->put('/{program}', [ProgramController::class, 'update']);
         Route::middleware('auth:sanctum')->post('/', [ProgramController::class, 'store']);
         Route::middleware('auth:sanctum')->delete('/{program}', [ProgramController::class, 'destroy']);
+    });
+
+    Route::prefix('blog')->group(function () {
+        Route::get('/', [BlogController::class, 'index']);
+        Route::get('/{blog}', [BlogController::class, 'show']);
+        Route::middleware('auth:sanctum')->put('/{blog}', [BlogController::class, 'update']);
+        Route::middleware('auth:sanctum')->post('/', [BlogController::class, 'store']);
+        Route::middleware('auth:sanctum')->delete('/{blog}', [BlogController::class, 'destroy']);
     });
 });

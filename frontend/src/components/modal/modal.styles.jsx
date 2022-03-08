@@ -81,3 +81,10 @@ export const CloseButton = styled.div`
     transform: rotate(360deg);
   }
 `;
+
+export const AddButton = styled(CloseButton)`
+  &::before {
+    content: "+";
+    color: #000;
+  }
+`;
