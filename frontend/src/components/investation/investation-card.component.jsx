@@ -35,6 +35,7 @@ const InvestationCard = ({ id, title, proveImage, image, type, location, periode
       id,
       formData
     });
+    setPreview(false);
     setLoading(false);
   }
 

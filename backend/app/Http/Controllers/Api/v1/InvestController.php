@@ -44,6 +44,9 @@ class InvestController extends Controller
             if ($request->hasFile('image')) {
                 $name = time() . '.jpg';
                 $request->image->storeAs('public/images', $name);
+                if ($invest->image) $invest->image()->update([
+                    'name' => $name
+                ]);
                 $invest->image()->create([
                     'name' => $name
                 ]);

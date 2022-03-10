@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\v1\BlogController;
 use App\Http\Controllers\Api\v1\InvestController;
 use App\Http\Controllers\Api\v1\ProgramController;
+use App\Http\Controllers\Api\v1\ProgramProgressController;
 use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,7 @@ Route::prefix('v1')->group(function () {
         Route::middleware('auth:sanctum')->put('/{program}', [ProgramController::class, 'update']);
         Route::middleware('auth:sanctum')->post('/', [ProgramController::class, 'store']);
         Route::middleware('auth:sanctum')->delete('/{program}', [ProgramController::class, 'destroy']);
+        Route::middleware('auth:sanctum')->put('/progress/{program}', [ProgramProgressController::class, 'update']);
     });
 
     Route::prefix('blog')->group(function () {

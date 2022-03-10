@@ -49,14 +49,16 @@ const ProgramDetail = () => {
   const handleClick = async () => {
     if (user?.type === 'pemodal') {
       setLoading(true);
-      const { value: { investasi } } = await invest();
-      const formData = new FormData();
-      formData.append('program_id', id);
-      formData.append('total', investasi);
-      await createInvest({
-        setErrors,
-        formData
-      })
+      const { value } = await invest();
+      if (value?.investasi) {
+        const formData = new FormData();
+        formData.append('program_id', id);
+        formData.append('total', value.investasi);
+        await createInvest({
+          setErrors,
+          formData
+        })
+      }
       setLoading(false);
     } else {
       failed('Oppss. Kamu harus login dulu sebagai pemodal!')
