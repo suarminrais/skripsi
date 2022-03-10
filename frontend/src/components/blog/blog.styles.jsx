@@ -97,6 +97,7 @@ export const BlogDetailContent = styled.div`
 `;
 
 export const BlogDetailDivider = styled.hr`
+  background-color: rgba(0, 0, 0, 0);
   margin: 0 16px;
   padding: 1rem 0;
   border: 0;

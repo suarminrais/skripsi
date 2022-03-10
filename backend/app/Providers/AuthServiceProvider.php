@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Invest;
 use App\Models\Program;
 use App\Models\User;
+use App\Policies\InvestPolicy;
 use App\Policies\ProgramPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -19,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         User::class => UserPolicy::class,
         Program::class => ProgramPolicy::class,
+        Invest::class => InvestPolicy::class,
     ];
 
     /**

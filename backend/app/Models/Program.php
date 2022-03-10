@@ -31,4 +31,23 @@ class Program extends Model
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function invests()
+    {
+        return $this->hasMany(Invest::class);
+    }
+
+    public function getFundedAttribute()
+    {
+        return $this->invests()->where('status', true)->sum('total');
+    }
+
+    protected $appends = [
+        'funded'
+    ];
 }

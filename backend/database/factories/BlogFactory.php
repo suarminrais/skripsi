@@ -14,7 +14,8 @@ class BlogFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'description' => $this->faker->paragraph(),
+            'name' => $this->faker->word(),
         ];
     }
 }

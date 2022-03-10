@@ -1,4 +1,5 @@
 import React from "react";
+import { Loader } from "../loader/loader.styles";
 import { Button } from "../navbar/navbar.styles";
 import { ProgramTitle } from "./program.styles";
 import { ProgramBody } from "./program.styles";
@@ -10,7 +11,7 @@ import { ProgramBodyContainer } from "./program.styles";
 import { ProgramType } from "./program.styles";
 import { ProgramCardContainer } from "./program.styles";
 
-const ProgramCard = ({ title, location, periode, interest, funded, funding, type, onClick }) => {
+const ProgramCard = ({ title, location, periode, interest, funded, funding, type, onClick, loading }) => {
   return (
     <ProgramCardContainer>
       <ProgramCardContent>
@@ -42,7 +43,9 @@ const ProgramCard = ({ title, location, periode, interest, funded, funding, type
         </ProgramBodyContainer>
       </ProgramCardContent>
       <Button onClick={onClick} full>
-        Modali
+        {
+          loading ? <Loader /> : 'Modali'
+        }
       </Button>
     </ProgramCardContainer>
   );

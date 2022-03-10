@@ -42,7 +42,7 @@ class BlogController extends Controller
         }
 
         return response()->json([
-            'message' => 'success created data!'
+            'message' => 'Success created data!'
         ]);
     }
 
@@ -75,7 +75,7 @@ class BlogController extends Controller
         }
 
         return response()->json([
-            'message' => 'success updated data!'
+            'message' => 'Success updated data!'
         ]);
     }
 
@@ -85,7 +85,7 @@ class BlogController extends Controller
         $blog->delete();
 
         return response()->json([
-            'message' => 'success deleted data!'
+            'message' => 'Success deleted data!'
         ]);
     }
 }

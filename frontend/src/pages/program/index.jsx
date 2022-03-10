@@ -7,9 +7,11 @@ import ProgramCard from "@/components/program/program.component";
 import { useAuth } from "@/hooks/auth";
 import DataTableWrapper from "@/components/datatable/datatable-wrapper.component";
 import DataTable from "@/components/datatable/datatable.component";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { confirm } from "@/utils/alert";
 
 const Program = () => {
-  const { user, logout, program } = useAuth({ middleware: 'guest' });
+  const { user, logout, program, deleteProgram } = useAuth({ middleware: 'guest' });
   const [programs, setPrograms] = useState([]);
 
   useEffect(() => {
@@ -42,8 +44,26 @@ const Program = () => {
         }
       },
       { title: "Lokasi", field: "location" },
-      { title: "Action", width: 180 },
+      {
+        title: "Action",
+        width: 180,
+        field: "status",
+        formatter: (cell) => {
+          if (cell.getValue() === '1') return `<a class='btn btn-success'>Terima</a>`;
+          return `<a class='btn btn-danger'>Hapus</a>`;
+        },
+      },
     ];
+
+    const handleRowClick = (_, row) => {
+      confirm({
+        title: 'Kamu yakin ?'
+      }).then(() => {
+        deleteProgram({
+          id: row.getData().id
+        })
+      });
+    }
 
     return (
       <>
@@ -53,7 +73,7 @@ const Program = () => {
         <Navbar user={user} logout={logout} />
         <DataTableWrapper title="Data Program">
           {
-            (program && program?.data.length > 0) && <DataTable data={program?.data} columns={columns} />
+            (program && program?.data.length > 0) && <DataTable events={{ rowClick: handleRowClick }} data={program?.data} columns={columns} />
           }
         </DataTableWrapper>
         <Footer />

@@ -2,9 +2,9 @@
 export const perkembanganStatus = (status) => {
   switch (status) {
     case "1":
-      return 'Menunggu Pendanaan';
+      return 'Menunggu Persetujuan';
     case "2":
-      return 'Program Dalam Masa Budidaya';
+      return 'Menunggu Pendanaan';
     case "3":
       return 'Program Dalam Masa Panen';
     case "4":

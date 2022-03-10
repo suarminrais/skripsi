@@ -50,7 +50,7 @@ class UserController extends Controller
         $user->update($request->only(['password', 'email', 'name']));
 
         return response()->json([
-            'message' => "data updated!"
+            'message' => "Data updated!"
         ]);
     }
 

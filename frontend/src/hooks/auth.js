@@ -2,6 +2,7 @@ import useSWR from 'swr'
 import axios from '@/lib/axios'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { failed, success } from '@/utils/alert'
 
 export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
   const router = useRouter()
@@ -20,6 +21,12 @@ export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
   const { data: program, mutate: programMutate } = useSWR('/api/v1/program', () =>
     axios
       .get('/api/v1/program')
+      .then(res => res.data)
+  )
+
+  const { data: invest, mutate: investMutate } = useSWR('/api/v1/invest', () =>
+    axios
+      .get('/api/v1/invest')
       .then(res => res.data)
   )
 
@@ -106,6 +113,64 @@ export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
       })
   }
 
+  const deleteProgram = async ({ id }) => {
+    await csrf()
+
+    axios
+      .delete(`/api/v1/program/${id}`)
+      .then(({ data }) => {
+        programMutate()
+        success(data.message);
+      })
+      .catch(() => {
+        failed();
+      })
+  }
+
+  const deleteInvest = async ({ id }) => {
+    await csrf()
+
+    axios
+      .delete(`/api/v1/invest/${id}`)
+      .then(({ data }) => {
+        investMutate()
+        success(data.message);
+      })
+      .catch(() => {
+        failed();
+      })
+  }
+
+  const updateInvest = async ({ id, formData }) => {
+    await csrf()
+
+    axios
+      .post(`/api/v1/invest/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(({ data }) => {
+        investMutate()
+        success(data.message);
+      })
+      .catch(() => {
+        failed();
+      })
+  }
+
+  const deleteBlog = async ({ id }) => {
+    await csrf()
+
+    axios
+      .delete(`/api/v1/blog/${id}`)
+      .then(({ data }) => {
+        blogMutate()
+        success(data.message);
+      })
+      .catch(() => {
+        failed();
+      })
+  }
+
   const createProgram = async ({ setErrors, handleClick, formData }) => {
     await csrf()
 
@@ -138,6 +203,27 @@ export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
       .then(() => {
         handleClick()
         blogMutate();
+      })
+      .catch(error => {
+        if (error.response?.status !== 422) throw error
+
+        setErrors(Object.values(error.response?.data.errors).flat())
+      })
+  }
+
+  const createInvest = async ({ setErrors, formData }) => {
+    await csrf()
+
+    setErrors([])
+
+    axios
+      .post(`/api/v1/invest/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(() => {
+        success('Sukses melakukan investasi!');
+        router.push('/investasi')
+        investMutate();
       })
       .catch(error => {
         if (error.response?.status !== 422) throw error
@@ -217,5 +303,11 @@ export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
     blog,
     createBlog,
     blogDetail,
+    deleteProgram,
+    deleteBlog,
+    invest,
+    createInvest,
+    deleteInvest,
+    updateInvest,
   }
 }

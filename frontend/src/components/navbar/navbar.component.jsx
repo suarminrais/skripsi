@@ -23,13 +23,9 @@ const Navbar = ({ user, logout }) => {
           <Link href="/program">
             <NavItem>Program</NavItem>
           </Link>
-          {
-            (user && user?.type !== 'admin') && (
-              <Link href="/investasi">
-                <NavItem>Investasiku</NavItem>
-              </Link>
-            )
-          }
+          <Link href="/investasi">
+            <NavItem>Investasi</NavItem>
+          </Link>
           <Link href="/blog">
             <NavItem>Blog</NavItem>
           </Link>

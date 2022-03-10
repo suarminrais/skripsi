@@ -15,10 +15,12 @@ import draftToHtml from 'draftjs-to-html';
 import dynamic from "next/dynamic";
 import { useModal } from "@/hooks/modal";
 import DataTableWrapper from "@/components/datatable/datatable-wrapper.component";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { confirm } from "@/utils/alert";
 
 const EditorForm = dynamic(() => import('../../components/form/form-editor.component'), { ssr: false });
 const Blog = () => {
-  const { user, logout, blog, createBlog } = useAuth({ middleware: 'guest' });
+  const { user, logout, blog, createBlog, deleteBlog } = useAuth({ middleware: 'guest' });
   const [show, handleClick] = useModal();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -50,8 +52,24 @@ const Blog = () => {
       { title: "Id", field: "id", width: 70 },
       { title: "Name", field: "name" },
       { title: "Description", field: "description" },
-      { title: "Action", width: 180 },
+      {
+        title: "Action",
+        width: 180,
+        formatter: (cell) => {
+          return `<a class='btn btn-danger'>Hapus</a>`;
+        },
+      },
     ];
+
+    const handleRowClick = (_, row) => {
+      confirm({
+        title: 'Kamu yakin ?'
+      }).then(() => {
+        deleteBlog({
+          id: row.getData().id
+        })
+      });
+    }
 
     return (
       <>
@@ -61,7 +79,7 @@ const Blog = () => {
         <Navbar user={user} logout={logout} />
         <DataTableWrapper title="Data Blog" handleClick={handleClick}>
           {
-            (blog && blog?.data.length > 0) && <DataTable data={blog?.data} columns={columns} />
+            (blog && blog?.data.length > 0) && <DataTable events={{ rowClick: handleRowClick }} data={blog?.data} columns={columns} />
           }
         </DataTableWrapper>
         <Modal show={show} loading={loading} handleClick={handleClick} title="Buat Blog" handleSubmit={handleSubmit}>

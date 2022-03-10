@@ -16,7 +16,9 @@ class ProgramController extends Controller
 
     public function index()
     {
-        return Program::latest()->paginate();
+        if (Auth::check() && Auth::user()->type === 'petani') return Program::where('user_id', Auth::user()->id)->latest()->paginate();
+        if (Auth::check() && Auth::user()->type === 'admin') return Program::latest()->paginate();
+        return Program::where('status', '!=', 1)->latest()->paginate();
     }
 
     public function store(Request $request)
@@ -60,7 +62,7 @@ class ProgramController extends Controller
         }
 
         return response()->json([
-            'message' => 'success created data!'
+            'message' => 'Success created data!'
         ]);
     }
 
@@ -71,9 +73,9 @@ class ProgramController extends Controller
 
     public function update(Request $request, Program $program)
     {
-        if (Auth::user()->type === 'petani' && $program->status !== 1) return response()->json([
+        if (Auth::user()->type === 'petani' && $program->status != 1) return response()->json([
             'message' => 'Opss. data sudah tidak bisa diubah!'
-        ]);
+        ], 400);
 
         $this->validate($request, [
             'description' => 'sometimes',
@@ -128,22 +130,30 @@ class ProgramController extends Controller
         );
 
         return response()->json([
-            'message' => 'success updated data!'
+            'message' => 'Success updated data!'
         ]);
     }
 
     public function destroy(Program $program)
     {
-        if ($program->status !== 1) return response()->json([
+        if (Auth::user()->type === 'petani' && $program->status != 1) return response()->json([
             'message' => 'Opss. data sudah tidak bisa dihapus!'
-        ]);
+        ], 400);
+
+        if (Auth::user()->type == 'admin' && $program->status == 1) {
+            $program->update(['status' => 2]);
+
+            return response()->json([
+                'message' => 'Program accepted!'
+            ]);
+        }
 
         $program->image()->delete();
 
         $program->delete();
 
         return response()->json([
-            'message' => 'success updated data!'
+            'message' => 'Success deleted data!'
         ]);
     }
 }

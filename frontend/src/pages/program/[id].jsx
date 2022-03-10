@@ -25,19 +25,43 @@ import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import _ from 'lodash';
+import { failed, invest } from "@/utils/alert";
 
 const ProgramDetail = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { user, logout, programDetail, program } = useAuth({ middleware: 'guest', id });
+  const { user, logout, programDetail, program, createInvest } = useAuth({ middleware: 'guest', id });
   const [active, setActive] = useState(1);
   const [programs, setPrograms] = useState(1);
+  const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const checkActive = (id) => (active === id ? true : false);
 
   useEffect(() => {
+    if (errors.length > 0) alert(errors)
+  }, [errors]);
+
+  useEffect(() => {
     setPrograms(_.slice(_.filter(program?.data, (e) => e.id !== id), 0, 3));
   }, [program])
+
+  const handleClick = async () => {
+    if (user?.type === 'pemodal') {
+      setLoading(true);
+      const { value: { investasi } } = await invest();
+      const formData = new FormData();
+      formData.append('program_id', id);
+      formData.append('total', investasi);
+      await createInvest({
+        setErrors,
+        formData
+      })
+      setLoading(false);
+    } else {
+      failed('Oppss. Kamu harus login dulu sebagai pemodal!')
+    }
+  }
 
   return (
     <>
@@ -84,7 +108,17 @@ const ProgramDetail = () => {
               }
             </ProgramDetailLeft>
             <ProgramDetailRight>
-              <ProgramCard title={programDetail?.name} periode={programDetail?.periode} interest={programDetail?.interest} funded={programDetail?.funded?.toLocaleString("id-ID")} funding={programDetail?.funding?.toLocaleString("id-ID")} type={programDetail?.type} location={programDetail?.location} />
+              <ProgramCard
+                title={programDetail?.name}
+                periode={programDetail?.periode}
+                interest={programDetail?.interest}
+                funded={programDetail?.funded?.toLocaleString("id-ID")}
+                funding={programDetail?.funding?.toLocaleString("id-ID")}
+                type={programDetail?.type}
+                location={programDetail?.location}
+                loading={loading}
+                onClick={handleClick}
+              />
             </ProgramDetailRight>
           </ProgramDetailContent>
           <ProgramDetailDivider />

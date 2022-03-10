@@ -20,12 +20,12 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password_confirmation, setPasswordConfirmation] = useState('')
-  const [type, setType] = useState('')
+  const [type, setType] = useState('petani')
   const [errors, setErrors] = useState([])
 
   const handleClick = () => {
     setLoading(true)
-    register({ name, email, password, password_confirmation, setLoading, setErrors });
+    register({ name, email, password, type, password_confirmation, setLoading, setErrors });
   }
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Login = () => {
         <Input value={email} onChange={e => setEmail(e.target.value)} placeholder="Alamat Email" type="text" />
         <Input value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" type="password" />
         <Input value={password_confirmation} onChange={e => setPasswordConfirmation(e.target.value)} placeholder="Ulangi Password" type="password" />
-        <Checkbox label="Pemodal" value={type} onChecked={() => setType('pemodal')} name="type" />
+        <Checkbox label="Pemodal" value={type} onChange={() => type === 'petani' ? setType('pemodal') : setType('petani')} name="type" />
         <Button full primary onClick={handleClick}>
           {loading ? <Loader /> : 'Daftar'}
         </Button>
