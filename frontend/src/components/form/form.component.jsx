@@ -16,10 +16,10 @@ export const InputLabel = ({ label, type, value, onChange, hide, full }) => {
   );
 };
 
-export const Checkbox = ({ label, value, ...props }) => {
+export const Radio = ({ label, value, ...props }) => {
   return (
     <FormRow>
-      <input type="checkbox" value={value} {...props} />
+      <input type="radio" value={value} {...props} />
       <FormLabel htmlFor={label}>{label}</FormLabel>
     </FormRow>
   );

@@ -171,6 +171,31 @@ export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
       })
   }
 
+  const editBlog = async ({
+    id,
+    formData,
+    handleClick,
+    setErrors,
+  }) => {
+    await csrf()
+
+    axios
+      .post(`/api/v1/blog/${id}`, formData)
+      .then(({
+        data
+      }) => {
+        blogMutate()
+        handleClick()
+        success(data.message);
+      })
+      .catch((error) => {
+        failed();
+        if (error.response?.status !== 422) throw error
+
+        setErrors(Object.values(error.response?.data.errors).flat())
+      })
+  }
+
   const createProgram = async ({ setErrors, handleClick, formData }) => {
     await csrf()
 
@@ -309,5 +334,6 @@ export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
     createInvest,
     deleteInvest,
     updateInvest,
+    editBlog,
   }
 }

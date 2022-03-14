@@ -1,7 +1,8 @@
 import Card from "@/components/card/card.component";
 import { Input } from "@/components/card/card.styles";
 import Footer from "@/components/footer/footer.component";
-import { Checkbox } from "@/components/form/form.component";
+import { Radio } from "@/components/form/form.component";
+import { FormRow } from "@/components/form/form.styles";
 import { Loader } from "@/components/loader/loader.styles";
 import Navbar from "@/components/navbar/navbar.component";
 import { Button } from "@/components/navbar/navbar.styles";
@@ -43,7 +44,10 @@ const Login = () => {
         <Input value={email} onChange={e => setEmail(e.target.value)} placeholder="Alamat Email" type="text" />
         <Input value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" type="password" />
         <Input value={password_confirmation} onChange={e => setPasswordConfirmation(e.target.value)} placeholder="Ulangi Password" type="password" />
-        <Checkbox label="Pemodal" value={type} onChange={() => type === 'petani' ? setType('pemodal') : setType('petani')} name="type" />
+        <FormRow mt="0">
+          <Radio label="Petani" checked value={type} onChange={() => setType('pemodal')} name="type" />
+          <Radio label="Pemodal" value={type} onChange={() => setType('pemodal')} name="type" />
+        </FormRow>
         <Button full primary onClick={handleClick}>
           {loading ? <Loader /> : 'Daftar'}
         </Button>

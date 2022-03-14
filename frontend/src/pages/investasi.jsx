@@ -21,7 +21,6 @@ import draftToHtml from 'draftjs-to-html';
 import Link from "next/link";
 import DataTableWrapper from "@/components/datatable/datatable-wrapper.component";
 import DataTable from "@/components/datatable/datatable.component";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { confirm } from "@/utils/alert";
 
 const EditorForm = dynamic(() => import('../components/form/form-editor.component'), { ssr: false });
@@ -57,7 +56,7 @@ const Investation = () => {
     if (errors.length > 0) alert(errors)
   }, [errors]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async ({ isEdit = false }) => {
     const { id } = user;
     const formData = new FormData();
     formData.append('user_id', id)
@@ -77,54 +76,58 @@ const Investation = () => {
   }
 
   if (user?.type === 'admin') {
+    const onClick = (id) => {
+      confirm({
+        title: 'Kamu yakin ?',
+        text: '',
+        confirmButtonText: 'Terima'
+      }).then(({ isConfirmed }) => {
+        if (isConfirmed) {
+          const formData = new FormData();
+          formData.append('_method', 'put');
+          updateInvest({
+            id: id,
+            formData,
+          })
+        }
+      });
+    }
+    const onClickDelete = (id) => {
+      confirm({
+        title: 'Kamu yakin ?',
+      }).then(({ isConfirmed }) => {
+        if (isConfirmed)
+          deleteInvest({
+            id
+          })
+      });
+    }
     const columns = [
-      { title: "Id", field: "id", width: 70 },
       { title: "Name", field: "user.name" },
       { title: "Nama Program", field: "program.name", },
       {
         title: "Total Investasi",
         field: "total",
         formatter: (cell) => {
-          return `${cell.getValue().toLocaleString("id-ID")}`;
+          return `Rp ${cell.toLocaleString("id-ID")}`;
         }
       },
       {
         title: "Target Dana",
         field: "image.name",
         formatter: (cell) => {
-          if (cell.getValue()) return `<img height=200 width=200 src="${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/images/${cell.getValue()}" />`
+          if (cell) return <img height={200} width={200} src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/images/${cell}`} />
           return `-`;
         }
       },
       {
         title: "Action",
-        width: 180,
-        field: "status",
-        formatter: (cell) => {
-          if (!cell.getValue()) return `<a class='btn btn-success'>Terima</a>`;
-          return `<a class='btn btn-danger'>Hapus</a>`;
+        field: 'status',
+        formatter: (cell, id) => {
+          return <>{!cell && (<a onClick={() => onClick(id)} class='btn btn-success'>Terima</a>)} <a onClick={() => onClickDelete(id)} class='btn btn-danger'>Hapus</a></>;
         },
       },
     ];
-
-    const handleRowClick = (_, row) => {
-      confirm({
-        title: 'Kamu yakin ?'
-      }).then(() => {
-        if (!row.getData().status) {
-          const formData = new FormData();
-          formData.append('_method', 'put');
-          updateInvest({
-            id: row.getData().id,
-            formData,
-          })
-        }
-        else
-          deleteInvest({
-            id: row.getData().id,
-          })
-      });
-    }
 
     return (
       <>
@@ -134,7 +137,7 @@ const Investation = () => {
         <Navbar user={user} logout={logout} />
         <DataTableWrapper title="Data Investasi">
           {
-            (invest && invest?.data.length > 0) && <DataTable events={{ rowClick: handleRowClick }} data={invest?.data} columns={columns} />
+            invest && <DataTable data={invest?.data} columns={columns} />
           }
         </DataTableWrapper>
         <Footer />

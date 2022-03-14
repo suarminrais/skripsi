@@ -29,7 +29,7 @@ const Home = () => {
       <Hero />
       <Heading bg="#F9F9F9" title="Program Modal Tani" section="Program" between>
         {
-          programs?.length > 0 && programs.map(data => <Program
+          programs?.length > 0 ? programs.map(data => <Program
             key={data.id}
             id={data.id}
             image={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/images/${data.image.name}`}
@@ -40,7 +40,7 @@ const Home = () => {
             funding={data.funding?.toLocaleString("id-ID")}
             type={data.type}
             location={data.location}
-          />)
+          />) : <p>Belum ada data</p>
         }
       </Heading>
       <Heading bg="#F4F4F4" title="Alur Kerja Modal Tani" section="Alur">
@@ -67,13 +67,13 @@ const Home = () => {
       </Heading>
       <Heading bg="#F9F9F9" title="Berita Terkait Pertanian" section="Blog" between>
         {
-          blogs?.length > 0 && blogs.map(data => <Blog
+          blogs?.length > 0 ? blogs.map(data => <Blog
             key={data.id}
             id={data.id}
             image={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/images/${data.image.name}`}
             title={data.name}
             body={data.description}
-          />)
+          />) : <p>Belum ada data</p>
         }
       </Heading>
       <Footer />

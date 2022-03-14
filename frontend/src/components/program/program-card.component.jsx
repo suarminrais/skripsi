@@ -44,7 +44,7 @@ const ProgramCard = ({ title, location, periode, interest, funded, funding, type
       </ProgramCardContent>
       <Button onClick={onClick} full>
         {
-          loading ? <Loader /> : 'Modali'
+          loading ? <Loader /> : 'Mulai Investasi'
         }
       </Button>
     </ProgramCardContainer>

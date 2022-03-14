@@ -21,7 +21,7 @@ export const FormRow = styled.div`
   gap:16px;
   align-items: center;
   margin-bottom: 0.4rem;
-  margin-top: -0.5rem;
+  margin-top: ${({ mt }) => mt ? mt : ' -0.5rem'};
 `;
 
 export const FormLabel = styled.label`
