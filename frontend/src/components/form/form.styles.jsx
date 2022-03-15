@@ -54,3 +54,25 @@ export const FormInput = styled(Input)`
   }`}
   ${({ hide }) => hide && "display: none;"}
 `;
+
+export const FormSelect = styled.select`
+  width: calc(100% - 35px);
+  @media screen and (max-width: 767px) {
+    width: calc(100% - 35px);
+  }
+  display: block;
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e);
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  appearance: none;
+`;

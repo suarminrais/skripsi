@@ -1,5 +1,6 @@
 import React from "react";
 import { FormLabel } from "./form.styles";
+import { FormSelect } from "./form.styles";
 import { FormInput } from "./form.styles";
 import { FormRow } from "./form.styles";
 import { FormColumn } from "./form.styles";
@@ -15,6 +16,17 @@ export const InputLabel = ({ label, type, value, onChange, hide, full }) => {
     </FormColumn>
   );
 };
+
+export const SelectLabel = ({ label, value, onChange, children}) => {
+  return (
+    <FormColumn>
+      <FormLabel htmlFor={label}>{label}</FormLabel>
+        <FormSelect value={value} onChange={onChange} id={label}>
+          {children}
+        </FormSelect>
+    </FormColumn>
+  );
+}
 
 export const Radio = ({ label, value, ...props }) => {
   return (

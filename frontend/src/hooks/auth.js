@@ -185,6 +185,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
         data
       }) => {
         blogMutate()
+        blogDetailMutate()
         handleClick()
         success(data.message);
       })
@@ -208,6 +209,28 @@ export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
       .then(() => {
         handleClick()
         programMutate();
+      })
+      .catch(error => {
+        if (error.response?.status !== 422) throw error
+
+        setErrors(Object.values(error.response?.data.errors).flat())
+      })
+  }
+
+  const editProgram = async ({ id, setErrors, handleClick, formData }) => {
+    await csrf()
+
+    setErrors([])
+
+    axios
+      .post(`/api/v1/program/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(({ data }) => {
+        if (handleClick) handleClick()
+        programDetailMutate()
+        programMutate()
+        success(data.message);
       })
       .catch(error => {
         if (error.response?.status !== 422) throw error
@@ -335,5 +358,6 @@ export const useAuth = ({ middleware, redirectIfAuthenticated, id } = {}) => {
     deleteInvest,
     updateInvest,
     editBlog,
+    editProgram,
   }
 }

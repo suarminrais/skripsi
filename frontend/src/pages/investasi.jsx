@@ -22,12 +22,14 @@ import Link from "next/link";
 import DataTableWrapper from "@/components/datatable/datatable-wrapper.component";
 import DataTable from "@/components/datatable/datatable.component";
 import { confirm } from "@/utils/alert";
+import { SelectLabel } from "@/components/form/form.component";
+import axios from "@/lib/axios";
 
 const EditorForm = dynamic(() => import('../components/form/form-editor.component'), { ssr: false });
 
 const Investation = () => {
   const [show, handleClick] = useModal();
-  const { user, logout, createProgram, program, invest, updateInvest, deleteInvest } = useAuth({ middleware: 'auth' });
+  const { user, logout, createProgram, editProgram, program, invest, updateInvest, deleteInvest } = useAuth({ middleware: 'auth' });
   const [programs, setPrograms] = useState([]);
   const [invests, setInvest] = useState([]);
 
@@ -41,7 +43,7 @@ const Investation = () => {
 
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('')
-  const [type, setType] = useState('')
+  const [type, setType] = useState()
   const [location, setLocation] = useState('')
   const [latitude, setLatitude] = useState('')
   const [longitude, setLongitude] = useState('')
@@ -51,15 +53,16 @@ const Investation = () => {
   const [image, setImage] = useState('')
   const [description, setWysiwyg] = useState(EditorState.createEmpty());
   const [errors, setErrors] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+  const [id, setId] = useState();
 
   useEffect(() => {
     if (errors.length > 0) alert(errors)
   }, [errors]);
 
-  const handleSubmit = async ({ isEdit = false }) => {
-    const { id } = user;
+  const handleSubmit = async ({ isEdit = false, id }) => {
     const formData = new FormData();
-    formData.append('user_id', id)
+    formData.append('user_id', user?.id)
     formData.append('name', name)
     formData.append('type', type)
     formData.append('location', location)
@@ -68,11 +71,28 @@ const Investation = () => {
     formData.append('periode', periode)
     formData.append('interest', interest)
     formData.append('funding', funding)
-    formData.append('image', image)
-    formData.append('description', draftToHtml(convertToRaw(description?.getCurrentContent())))
+    if (image) formData.append('image', image)
+    if (isEdit) formData.append('_method', 'put')
+    if (description?.getCurrentContent()) formData.append('description', draftToHtml(convertToRaw(description?.getCurrentContent())))
     setLoading(true)
-    await createProgram({ formData, setErrors, handleClick })
+    isEdit ? await editProgram({formData, id, setErrors, handleClick}) : await createProgram({ formData, setErrors, handleClick })
     setLoading(false)
+  }
+
+  const onEdit = async (id) => {
+    const { data } = await axios
+      .get(`/api/v1/program/${id}`)
+    setIsEdit(true)
+    setId(id)
+    handleClick()
+    setName(data.name)
+    setType(data.type)
+    setLocation(data.location)
+    setLatitude(data.latitude)
+    setLongitude(data.longitude)
+    setPeriode(data.periode)
+    setInterest(data.interest)
+    setFunding(data.funding)
   }
 
   if (user?.type === 'admin') {
@@ -203,16 +223,23 @@ const Investation = () => {
                   funding={data.funding?.toLocaleString("id-ID")}
                   type={data.type}
                   location={data.location}
+                  onEdit={onEdit}
                 />)
               }
             </InvestationColumn>
           </InvestationBody>
         </Container>
       </InvestationContainer>
-      <Modal show={show} loading={loading} handleClick={handleClick} title="Buat Program" handleSubmit={handleSubmit}>
+      <Modal show={show} loading={loading} handleClick={handleClick} title={isEdit ? 'Edit Program' : 'Buat Program'} handleSubmit={() => handleSubmit({isEdit, id})}>
         <Form>
           <InputLabel value={name} onChange={e => setName(e.target.value)} label="Nama Program" type="text" />
-          <InputLabel value={type} onChange={e => setType(e.target.value)} label="Tipe Program" type="text" />
+          <SelectLabel value={type} onChange={e => setType(e.target.value)} label="Tipe Program">
+            <option disabled selected>Pilih Tipe Program</option>
+            <option value="Tanaman Pangan">Tanaman Pangan</option>
+            <option value="Buah-Buahan">Buah-Buahan</option>
+            <option value="Sayuran">Sayuran</option>
+            <option value="Perikanan">Perikanan</option>
+          </SelectLabel>
           <InputLabel value={location} onChange={e => setLocation(e.target.value)} label="Lokasi Program" type="text" />
           <InputLabel value={latitude} onChange={e => setLatitude(e.target.value)} label="Latitude Lokasi" type="text" />
           <InputLabel value={longitude} onChange={e => setLongitude(e.target.value)} label="Longitude Lokasi" type="text" />

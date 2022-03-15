@@ -18,7 +18,7 @@ class ProgramController extends Controller
     {
         if (Auth::check() && Auth::user()->type === 'petani') return Program::where('user_id', Auth::user()->id)->latest()->paginate();
         if (Auth::check() && Auth::user()->type === 'admin') return Program::latest()->paginate();
-        return Program::where('status', '!=', 1)->latest()->paginate();
+        return Program::where('status', '!=', 1)->where('status', '!=', 5)->latest()->paginate();
     }
 
     public function store(Request $request)
@@ -73,10 +73,6 @@ class ProgramController extends Controller
 
     public function update(Request $request, Program $program)
     {
-        if (Auth::user()->type === 'petani' && $program->status != 1) return response()->json([
-            'message' => 'Opss. data sudah tidak bisa diubah!'
-        ], 400);
-
         $this->validate($request, [
             'description' => 'sometimes',
             'name' => 'sometimes',
@@ -99,22 +95,6 @@ class ProgramController extends Controller
             ]);
         }
 
-        if (Auth::user()->type === 'admin')
-            $program->update(
-                $request->only([
-                    'description',
-                    'name',
-                    'type',
-                    'location',
-                    'latitude',
-                    'longitude',
-                    'periode',
-                    'interest',
-                    'funding',
-                    'status',
-                ])
-            );
-
         $program->update(
             $request->only([
                 'description',
@@ -126,6 +106,7 @@ class ProgramController extends Controller
                 'periode',
                 'interest',
                 'funding',
+                'status',
             ])
         );
 

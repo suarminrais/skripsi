@@ -8,10 +8,13 @@ import { useAuth } from "@/hooks/auth";
 import DataTableWrapper from "@/components/datatable/datatable-wrapper.component";
 import DataTable from "@/components/datatable/datatable.component";
 import { confirm } from "@/utils/alert";
+import Link from "next/link";
+import { perkembanganStatus } from "@/utils/status";
 
 const Program = () => {
-  const { user, logout, program, deleteProgram } = useAuth({ middleware: 'guest' });
+  const { user, logout, program, deleteProgram, editProgram } = useAuth({ middleware: 'guest' });
   const [programs, setPrograms] = useState([]);
+  const [_, setErrors] = useState([]);
 
   useEffect(() => {
     setPrograms(program?.data)
@@ -34,16 +37,30 @@ const Program = () => {
     const onClickDelete = (id) => {
       confirm({
         title: 'Kamu yakin ?',
+        text: 'Program status akan ditolak!',
+        confirmButtonText: 'Tolak',
       }).then(({ isConfirmed }) => {
-        if (isConfirmed)
-          deleteProgram({
-            id
+        if (isConfirmed) {
+          const formData = new FormData();
+          formData.append('status', '5');
+          formData.append('_method', 'put');
+          editProgram({
+            id,
+            formData,
+            setErrors,
           })
+        }
       });
     }
 
     const columns = [
-      { title: "Name", field: "name" },
+      { 
+        title: "Name",
+        field: "name",
+        formatter: (cell, id) => {
+          return <Link href={`/program/${id}`}>{cell}</Link>;
+        }
+      },
       {
         title: "Lama Periode",
         field: "periode",
@@ -66,11 +83,16 @@ const Program = () => {
         }
       },
       { title: "Lokasi", field: "location" },
+      { 
+        title: "Status", 
+        field: "status",
+        formatter: (cell) => perkembanganStatus(cell)
+      },
       {
         title: "Action",
         field: "status",
         formatter: (cell, id) => {
-          return <>{cell === '1' && (<a onClick={() => onClick(id)} class='btn btn-success'>Terima</a>)} <a onClick={() => onClickDelete(id)} class='btn btn-danger'>Hapus</a></>;
+          return <>{cell === '1' && (<a onClick={() => onClick(id)} class='btn btn-success'>Terima</a>)} <a onClick={() => onClickDelete(id)} class='btn btn-danger'>Tolak</a></>;
         },
       },
     ];

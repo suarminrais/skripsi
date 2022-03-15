@@ -1,6 +1,8 @@
 import { useAuth } from "@/hooks/auth";
+import { confirm } from "@/utils/alert";
 import { perkembanganStatus } from "@/utils/status";
 import React, { useState } from "react";
+import { SelectLabel } from "../form/form.component";
 import { Loader } from "../loader/loader.styles";
 import { Button } from "../navbar/navbar.styles";
 import { ProgramIcon } from "../program/program.styles";
@@ -16,15 +18,29 @@ import { InvestationCardImage } from "./investation.styles";
 import { InvestationCardRow } from "./investation.styles";
 import { InvestationCardContainer } from "./investation.styles";
 
-const InvestationCard = ({ id, title, proveImage, image, type, location, periode, interest, funded, funding, status, total }) => {
+const InvestationCard = ({ onEdit, id, title, proveImage, image, type, location, periode, interest, funded, funding, status, total }) => {
   const [preview, setPreview] = useState();
   const [loading, setLoading] = useState(false);
+  const [_, setErrors] = useState([]);
 
-  const { updateInvest } = useAuth({ middleware: 'auth' })
+  const { updateInvest, user, deleteProgram, editProgram } = useAuth({ middleware: 'auth' })
 
   const handleChangeFile = (e) => {
     setPreview(e.target.files[0]);
   };
+
+  const onDelete = async () => {
+    setLoading(true);
+    confirm({
+      title: 'Kamu yakin ?',
+    }).then(async ({ isConfirmed }) => {
+      if (isConfirmed)
+        await deleteProgram({
+          id,
+        });
+        setLoading(false);
+    });
+  }
 
   const handleClick = async () => {
     setLoading(true);
@@ -37,6 +53,25 @@ const InvestationCard = ({ id, title, proveImage, image, type, location, periode
     });
     setPreview(false);
     setLoading(false);
+  }
+
+  const handleChange = async (e) => {
+    confirm({
+      title: 'Kamu yakin ?',
+      text: 'Data status progress akan diupdate!',
+      confirmButtonText: 'Update'
+    }).then( async({ isConfirmed }) => {
+      if (isConfirmed){
+        const formData = new FormData();
+        formData.append('status', e.target.value);
+        formData.append('_method', 'put');
+        await editProgram({
+          id,
+          formData,
+          setErrors,
+        })
+      }
+    });
   }
 
   return (
@@ -75,6 +110,26 @@ const InvestationCard = ({ id, title, proveImage, image, type, location, periode
           <ProgramText>
             Rp. {funded} dari Rp. {funding}
           </ProgramText>
+        </InvestationCardColumn>
+        <InvestationCardColumn>
+          {
+            (user?.type === 'petani' && (status === '1' || status === '5')) && (
+              <>
+              <a onClick={() => onEdit(id)} class='btn btn-warning mb-1'>Edit</a><a onClick={() => onDelete(id)} class='btn btn-danger'>{loading ? <Loader /> : 'Hapus'}</a>
+              </>
+            )
+          }
+          {
+            (user?.type === 'petani' && (status !== '1' && status !== '5' && status !== '4')) && (
+              <>
+              <SelectLabel onChange={handleChange} label="Update Progress">
+                <option disabled selected>Pilih Progress</option>
+                <option value="3">Program Dalam Masa Panen</option>
+                <option value="4">Program Selesai</option>
+              </SelectLabel>
+              </>
+            )
+          }
         </InvestationCardColumn>
       </InvestationCardRow>
       {total && (

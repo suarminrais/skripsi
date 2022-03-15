@@ -65,9 +65,10 @@ class User extends Authenticatable
 
     public function getActiveProgramAttribute()
     {
-        if ($this->type === 'petani') return $this->programs()->where('status', '!=', 1)->where('status', '!=', 5)->count();
+        if ($this->type === 'petani') return $this->programs()->where('status', '!=', 1)->where('status', '!=', 4)->where('status', '!=', 5)->count();
         if ($this->type === 'pemodal') return $this->invests()->whereHas('program', function (Builder $query) {
             $query->where('status', '!=', 1);
+            $query->where('status', '!=', 4);
             $query->where('status', '!=', 5);
         })->count();
         return 0;
@@ -75,9 +76,9 @@ class User extends Authenticatable
 
     public function getDoneProgramAttribute()
     {
-        if ($this->type === 'petani') return $this->programs()->where('status', '==', 5)->count();
+        if ($this->type === 'petani') return $this->programs()->where('status', '==', 4)->count();
         if ($this->type === 'pemodal') return $this->invests()->whereHas('program', function (Builder $query) {
-            $query->where('status', '==', 5);
+            $query->where('status', '==', 4);
         })->count();
         return 0;
     }
@@ -95,7 +96,7 @@ class User extends Authenticatable
         })->leftJoin('invests', 'programs.id', '=', 'invests.program_id')->sum('total');
         if ($this->type === 'pemodal') {
             $invest = $this->invests()->where('invests.status', true)->whereHas('program', function (Builder $query) {
-                $query->where('status', 5);
+                $query->where('status', 4);
             })->leftJoin('programs', 'programs.id', '=', 'invests.program_id');
             return ($invest->sum('invests.total') * $invest->sum('programs.interest') * 0.01) + $invest->sum('invests.total');
         }
