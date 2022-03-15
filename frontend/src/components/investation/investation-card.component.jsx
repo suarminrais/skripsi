@@ -9,7 +9,7 @@ import { ProgramIcon } from "../program/program.styles";
 import { ProgramTitle } from "../program/program.styles";
 import { ProgramText } from "../program/program.styles";
 import { ProgramType } from "../program/program.styles";
-import { InvestationCardPreviewImage } from "./investation.styles";
+import { InvestationCardPreviewImage, NoteContainer } from "./investation.styles";
 import { InvestationCardInputContainer } from "./investation.styles";
 import { InvestationCardColumn } from "./investation.styles";
 import { InvestationCardDivider } from "./investation.styles";
@@ -145,6 +145,9 @@ const InvestationCard = ({ onEdit, id, title, proveImage, image, type, location,
               <ProgramType>Upload bukti di sini</ProgramType>
               <InvestationCardInputHide type="file" accept="image/*" onChange={handleChangeFile} />
             </InvestationCardInputContainer>
+            <NoteContainer>
+              Catatan: Transfer ke rekening BRI 753901007656535 A/N Modal Tani
+            </NoteContainer>
           </InvestationCardColumn>
           <Button onClick={handleClick}>{loading ? <Loader /> : 'Upload'}</Button>
         </InvestationCardRow>
