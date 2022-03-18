@@ -14,16 +14,26 @@ export const HeroImage = styled.div`
 `
 
 export const HeroTitle = styled.div`
-  width: 552px;
+  max-width: 552px;
+  width: 100%;
   font-size: 48px;
   font-weight: 600;
   line-height: 56px;
   margin-bottom: 16px;
+
+  @media screen and (max-width: 600px) {
+    font-size: 25px;
+  }
 `
 
 export const HeroSub = styled.div`
-  width: 381px;
+  max-width: 381px;
+  width:100%;
   font-size: 28px;
   line-height: 33px;
   margin-bottom: 16px;
+
+  @media screen and (max-width: 600px) {
+    font-size: 17px;
+  }
 `

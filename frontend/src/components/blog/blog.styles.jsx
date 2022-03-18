@@ -5,7 +5,7 @@ export const BlogContainer = styled.div`
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 0 4px rgb(0 0 0 / 20%);
-  margin: 0 16px;
+  margin: 0 16px 16px;
 
   @media screen and (max-width: 1000px) {
     width: 230px;

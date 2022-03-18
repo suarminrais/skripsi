@@ -51,4 +51,8 @@ export const SectionRow = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
+
+  @media screen and (max-width:995px) {
+    justify-content: center;
+  }
 `;

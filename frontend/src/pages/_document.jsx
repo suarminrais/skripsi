@@ -1,4 +1,4 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -15,12 +15,7 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body style={{
-          fontFamily: 'Nunito',
-          margin: 0,
-          padding: 0,
-          boxSizing: 'border-box'
-        }}>
+        <body>
           <Main />
           <NextScript />
         </body>

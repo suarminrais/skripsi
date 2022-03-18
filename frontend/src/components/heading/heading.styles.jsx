@@ -13,6 +13,10 @@ export const HeadingBody = styled.div`
   ${({ center }) => center && "justify-content: center;"}
   ${({ between }) => between && "justify-content: space-between;"}
   ${({ column }) => column && "flex-flow: column wrap; align-items:center;"}
+
+  @media screen and (max-width:995px) {
+    justify-content: center;
+  }
 `;
 
 export const HeadingSection = styled.div`

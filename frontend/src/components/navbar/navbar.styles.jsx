@@ -44,6 +44,62 @@ export const NavContainer = styled.div`
   align-items: center;
 `;
 
+export const NavMobile = styled.div`
+  display: contents;
+  @media screen and (max-width: 600px)
+  {
+    display:${({ open }) => open ? 'block' : ' none'};
+
+    & > button {
+      margin-left: 16px;
+      margin-bottom: 16px;
+    }
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+  }
+`
+
+export const NavLogoMobileContainer = styled.div`
+  display: none;
+
+  @media screen and (max-width: 600px)
+  {
+    justify-content:space-between;
+    display:flex;
+
+    & > :last-child {
+      margin-top: 7px;
+      margin-right: 7px;
+    }
+  }
+`;
+
+export const NavIcon = styled.div`
+  width: 24px;
+  height: 2px;
+  background-color: #333;
+  margin: 6px 0;
+  transition: 0.4s;
+`;
+
+export const NavIconContainer = styled.div`
+  margin-left: auto;
+  display: none;
+  cursor: pointer;
+  margin-right: 16px;
+  cursor: pointer;
+
+  @media screen and (max-width: 600px)
+  {
+    display:inline-block;
+  }
+`;
+
 export const NavItem = styled.div`
   display: flex;
   align-items: center;
@@ -61,7 +117,12 @@ export const NavLogo = styled.div`
   font-size: 22px;
   font-weight: 500;
   color: #5d5d5d;
-  cursor: pointer;
+  cursor: pointer; 
+
+  @media screen and (max-width:600px)
+  {
+    font-size: 16px;
+  }
 `;
 
 export const Button = styled.button`
@@ -117,6 +178,10 @@ export const AuthContainer = styled.div`
   gap:10px;
   align-items: center;
   margin-right: 16px;
+
+  @media screen and (max-width: 600px) {
+    margin-left: 16px;
+  }
 `;
 
 export const AuthName = styled.div`
@@ -147,6 +212,10 @@ export const DropdownMenu = styled.div`
   will-change: transform;
   top: 0px;
   transform: translate3d(-31px, 48px, 0px);
+  
+  @media screen and (max-width: 600px) {
+    transform: translate3d(-1px, 195px, 0px);
+  }
 `;
 
 export const DropdownItem = styled.div`
