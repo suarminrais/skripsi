@@ -50,7 +50,7 @@ const Investation = () => {
   const [periode, setPeriode] = useState('')
   const [interest, setInterest] = useState('')
   const [funding, setFunding] = useState('')
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState()
   const [description, setWysiwyg] = useState(EditorState.createEmpty());
   const [errors, setErrors] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
@@ -93,6 +93,12 @@ const Investation = () => {
     setPeriode(data.periode)
     setInterest(data.interest)
     setFunding(data.funding)
+  }
+
+  const handleCreate = () => {
+    setIsEdit(false);
+    setId();
+    handleClick();
   }
 
   if (user?.type === 'admin') {
@@ -189,7 +195,7 @@ const Investation = () => {
                 user?.type === 'pemodal' && <Link href="/program"><Button primary full>Investasi</Button></Link>
               }
               {
-                user?.type === 'petani' && <Button primary full onClick={handleClick}>
+                user?.type === 'petani' && <Button primary full onClick={handleCreate}>
                   Buat Program
                 </Button>
               }
